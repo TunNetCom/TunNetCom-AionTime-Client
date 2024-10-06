@@ -1,0 +1,78 @@
+<p-menubar [model]="items?.nav">
+    <ng-template pTemplate="start">
+        <app-sidebar></app-sidebar>
+        <svg width="33" height="35" viewBox="0 0 33 35" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="..." fill="var(--primary-color)" />
+            <mask id="mask0_1_36" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="0" y="0" width="31" height="33">
+                <path d="..." fill="var(--primary-color-text)" />
+            </mask>
+            <g mask="url(#mask0_1_36)">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="..." />
+            </g>
+            <path d="..." fill="var(--primary-color-text)" />
+            <path d="..." fill="var(--primary-color-text)" />
+            <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="..."
+                fill="var(--primary-color-text)"
+            />
+            <path d="..." fill="var(--primary-color-text)" />
+            <path d="..." fill="var(--primary-color-text)" />
+            <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="..."
+                fill="var(--primary-color-text)"
+            />
+            <path d="..." fill="var(--primary-color-text)" />
+            <path d="..." fill="var(--primary-color-text)" />
+            <path d="..." fill="var(--primary-color-text)" />
+            <path d="..." fill="var(--primary-color-text)" />
+        </svg>
+    </ng-template>
+    <ng-template pTemplate="item" let-item let-root="root">
+        <a pRipple class="flex align-items-center p-menuitem-link">
+            <span [class]="item.icon"></span>
+            <span class="ml-2">{{ item.label }}</span>
+            <p-badge *ngIf="item.badge" [ngClass]="{ 'ml-auto': !root, 'ml-2': root }" [value]="item.badge" />
+            <span *ngIf="item.shortcut" class="ml-auto border-1 surface-border border-round surface-100 text-xs p-1">{{ item.shortcut }}</span>
+            <i *ngIf="item.items" [ngClass]="['pi', root ? 'pi-angle-down ml-2' : 'pi-angle-right ml-auto']"></i>
+        </a>
+    </ng-template>
+    <ng-template pTemplate="end">
+        <div class="flex align-items-center gap-2">
+            <input type="text" pInputText placeholder="Search" class="w-8rem sm:w-auto" />
+
+                <a pRipple  (click)="menu.toggle($event)" (mouseenter)="menu.toggle($event)" class="flex align-items-center cursor-pointer  gap-2 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple">
+                    <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" shape="circle" />
+                    <span class="font-bold">Marwen Saad</span>
+                </a>
+
+                <p-menu (mouseleave)="menu.toggle($event)" [model]="items?.account" styleClass="w-full md:w-15rem" #menu [popup]="true">
+                    <ng-template pTemplate="submenuheader" let-item>
+                        <span class="text-primary font-bold">{{ item.label }}</span>
+                    </ng-template>
+                    <ng-template pTemplate="item" let-item>
+                        <a pRipple class="flex align-items-center p-menuitem-link">
+                            <span [class]="item.icon"></span>
+                            <span class="ml-2">{{ item.label }}</span>
+                            <p-badge *ngIf="item.badge" class="ml-auto" [value]="item.badge"></p-badge>
+                            <span *ngIf="item.shortcut" class="ml-auto border-1 surface-border border-round surface-100 text-xs p-1">
+                                {{ item.shortcut }}
+                            </span>
+                        </a>
+                    </ng-template>
+                    <ng-template pTemplate="end">
+                        <button pRipple class="relative overflow-hidden w-full p-link flex align-items-center p-2 pl-3 text-color hover:surface-200 border-noround">
+                            <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" class="mr-2" shape="circle"></p-avatar>
+                            <span class="inline-flex flex-column">
+                                <span class="font-bold">Amy Elsner</span>
+                                <span class="text-sm">Admin</span>
+                            </span>
+                        </button>
+                    </ng-template>
+                </p-menu>
+        </div>
+    </ng-template>
+</p-menubar>
