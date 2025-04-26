@@ -1,0 +1,455 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  OWNER
+  ADMIN
+  USER
+}
+
+enum InvitationStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+  EXPIRED
+}
+
+enum ContactType {
+  PERSON
+  COMPANY
+}
+
+enum DocumentType {
+  PDF
+  DOCX
+  DOC
+}
+
+enum TagType {
+  CANDIDATE
+  POST
+  DOCUMENT
+}
+
+enum SkillType {
+  HARD
+  SOFT
+}
+
+enum PostStatus {
+  ACTIVE
+  CLOSED
+  DRAFT
+}
+
+enum MatchStatus {
+  NEW
+  CONTACTED
+  INTERVIEWING
+  HIRED
+  REJECTED
+}
+
+enum EmploymentType {
+  FULL_TIME
+  PART_TIME
+  CONTRACT
+  TEMPORARY
+  INTERNSHIP
+  FREELANCE
+}
+
+enum WorkplaceType {
+  ON_SITE
+  HYBRID
+  REMOTE
+}
+
+enum AtsProvider {
+  WORKDAY
+  GREENHOUSE
+  LEVER
+  TALEO
+  JOBVITE
+  BAMBOOHR
+  SMARTRECRUITERS
+  ICIMS
+  SUCCESSFACTORS
+  WORKABLE
+  OTHER
+}
+
+enum JobWebsiteProvider {
+  LINKEDIN
+  INDEED
+  GLASSDOOR
+  MONSTER
+  ZIPRECRUITER
+}
+
+model Account {
+  id                String   @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @default(now()) @map("updated_at")
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("sessions")
+}
+
+model User {
+  id                     String        @id @default(cuid())
+  name                   String?
+  email                  String?       @unique
+  password               String?
+  emailVerified          DateTime?
+  image                  String?
+  role                   UserRole      @default(USER)
+  organizationId         String?
+  organization           Organization? @relation(fields: [organizationId], references: [id], onDelete: SetNull)
+  stripeCustomerId       String?       @unique @map("stripe_customer_id")
+  stripeSubscriptionId   String?       @unique @map("stripe_subscription_id")
+  stripePriceId          String?       @map("stripe_price_id")
+  stripeCurrentPeriodEnd DateTime?     @map("stripe_current_period_end")
+  createdAt              DateTime      @default(now()) @map("created_at")
+  updatedAt              DateTime      @default(now()) @map("updated_at")
+  accounts               Account[]
+  sessions               Session[]
+  jobPosts               JobPost[]
+  oauthStates            OAuthState[]
+
+  @@index([organizationId])
+  @@map("users")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+}
+
+model Tag {
+  id             String       @id @default(cuid())
+  name           String
+  textColor      String
+  bgColor        String
+  type           TagType      @default(CANDIDATE)
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  @@map("tags")
+}
+
+model JobPost {
+  id               String         @id @default(cuid())
+  title            String
+  description      String
+  companyName      String
+  status           PostStatus     @default(ACTIVE)
+  employmentType   EmploymentType @default(FULL_TIME)
+  workplaceType    WorkplaceType  @default(ON_SITE)
+  location         String?
+  salary           String?
+  applicationUrl   String?
+  applicationEmail String?
+  weights          SkillWeight[]
+  matches          Match[]
+  address          String?
+  userId           String
+  user             User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  organizationId   String
+  organization     Organization   @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  archivedAt       DateTime?
+  deletedAt        DateTime?
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+  atsPostings      AtsPosting[]
+
+  @@index([organizationId])
+  @@map("job_posts")
+}
+
+model SkillWeight {
+  id        String    @id @default(cuid())
+  name      String
+  weight    Int       @default(5) // 1-10 scale
+  type      SkillType
+  postId    String
+  post      JobPost   @relation(fields: [postId], references: [id], onDelete: Cascade)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@map("skill_weights")
+}
+
+model Candidate {
+  id             String           @id @default(cuid())
+  name           String
+  email          String           @unique
+  address        String?
+  cvUrl          String
+  archivedAt     DateTime?
+  deletedAt      DateTime?
+  skills         CandidateSkill[]
+  workExperience WorkExperience[]
+  achievements   Achievement[]
+  matches        Match[]
+  education      Education[]
+  organizationId String
+  organization   Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  processing     Boolean          @default(true)
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  certificates   Certificate[]
+
+  @@map("candidates")
+}
+
+model Education {
+  id          String    @id @default(cuid())
+  degree      String
+  school      String
+  startDate   DateTime
+  endDate     DateTime?
+  description String?
+  candidateId String
+  candidate   Candidate @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@map("education")
+}
+
+model Certificate {
+  id          String    @id @default(cuid())
+  name        String
+  date        DateTime
+  candidateId String
+  candidate   Candidate @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@map("certificates")
+}
+
+model CandidateSkill {
+  id          String    @id @default(cuid())
+  name        String
+  type        SkillType
+  proficiency Int       @default(5) // 1-10 scale
+  candidateId String
+  candidate   Candidate @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@map("candidate_skills")
+}
+
+model WorkExperience {
+  id          String    @id @default(cuid())
+  company     String
+  title       String
+  startDate   DateTime
+  endDate     DateTime?
+  description String?
+  candidateId String
+  candidate   Candidate @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@map("work_experiences")
+}
+
+model Achievement {
+  id          String    @id @default(cuid())
+  title       String
+  description String?
+  date        DateTime?
+  candidateId String
+  candidate   Candidate @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@map("achievements")
+}
+
+model MatchNote {
+  id        String   @id @default(cuid())
+  content   String
+  matchId   String
+  match     Match    @relation(fields: [matchId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("match_notes")
+}
+
+model Match {
+  id               String      @id @default(cuid())
+  score            Float
+  whyMatch         String?
+  emailSent        Boolean     @default(false)
+  emailSentAt      DateTime?
+  emailSubject     String?
+  emailBody        String?
+  postId           String
+  status           MatchStatus @default(NEW)
+  post             JobPost     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  feedback         Int?        @default(0)
+  candidateId      String
+  interviewDetails Json?
+  candidate        Candidate   @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  metadata         Json?
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
+  notes            MatchNote[]
+
+  @@unique([postId, candidateId])
+  @@map("matches")
+}
+
+model Organization {
+  id                    String                  @id @default(cuid())
+  name                  String
+  color                 String?
+  users                 User[]
+  invitations           OrganizationInvite[]
+  tags                  Tag[]
+  jobPosts              JobPost[]
+  candidates            Candidate[]
+  atsIntegrations       AtsIntegration[]
+  jobWebsiteIntegrations JobWebsiteIntegration[]
+  oauthStates           OAuthState[]
+  createdAt             DateTime                @default(now())
+  updatedAt             DateTime                @updatedAt
+
+  @@map("organizations")
+}
+
+model OrganizationInvite {
+  id             String           @id @default(cuid())
+  email          String
+  status         InvitationStatus @default(PENDING)
+  role           UserRole         @default(USER)
+  organizationId String
+  organization   Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  expiresAt      DateTime
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  @@unique([email, organizationId])
+  @@map("organization_invites")
+}
+
+model AtsIntegration {
+  id             String       @id @default(cuid())
+  provider       AtsProvider
+  accessToken    String
+  refreshToken   String?
+  tokenExpiry    DateTime?
+  isActive       Boolean      @default(true)
+  metadata       Json? // Store additional provider-specific information
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  jobPostings    AtsPosting[]
+
+  @@unique([provider, organizationId])
+  @@map("ats_integrations")
+}
+
+model AtsPosting {
+  id            String         @id @default(cuid())
+  externalId    String? // ID in the ATS system
+  externalUrl   String? // URL to the job in the ATS system
+  status        String         @default("PENDING") // PENDING, POSTED, FAILED
+  postId        String
+  post          JobPost        @relation(fields: [postId], references: [id], onDelete: Cascade)
+  integrationId String
+  integration   AtsIntegration @relation(fields: [integrationId], references: [id], onDelete: Cascade)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  @@unique([postId, integrationId])
+  @@map("ats_postings")
+}
+
+model OAuthState {
+  id             String       @id @default(cuid())
+  state          String       @unique
+  provider       AtsProvider
+  organizationId String
+  expiresAt      DateTime
+  createdAt      DateTime     @default(now())
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  User           User?        @relation(fields: [userId], references: [id])
+  userId         String?
+
+  @@index([state])
+  @@map("oauth_states")
+}
+
+model JobWebsiteIntegration {
+  id             String             @id @default(cuid())
+  provider       JobWebsiteProvider
+  accessToken    String
+  refreshToken   String?
+  isActive       Boolean            @default(true)
+  organizationId String
+  organization   Organization       @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  jobPostings    JobWebsitePosting[]
+  createdAt      DateTime           @default(now())
+  updatedAt      DateTime           @updatedAt
+
+  @@unique([provider, organizationId])
+  @@map("job_website_integrations")
+}
+
+model JobWebsitePosting {
+  id            String                @id @default(cuid())
+  postId        String
+  status        String                @default("PENDING") // PENDING, POSTED, FAILED
+  integrationId String
+  externalId    String?               // LinkedIn's internal job ID
+  externalUrl   String?               // LinkedIn job URL
+  integration   JobWebsiteIntegration @relation(fields: [integrationId], references: [id], onDelete: Cascade)
+  createdAt     DateTime              @default(now())
+  updatedAt     DateTime              @updatedAt
+
+  @@unique([postId, integrationId])
+  @@map("job_website_postings")
+}

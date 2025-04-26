@@ -1,0 +1,16 @@
+Dockerfile
+.dockerignore
+node_modules
+npm-debug.log
+README.md
+.next
+.git
+.gitignore
+.env*
+.vscode
+.github
+tests
+__tests__
+coverage
+.editorconfig
+DevOps
