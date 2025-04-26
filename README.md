@@ -1,58 +1,57 @@
-# CruxHire AI
+# AionTime AI
 
 <p align="center" style="margin-top: 20px">
   <p align="center">
-    CruxHire AI - Intelligent Recruitment Platform
+    AionTime AI - Intelligent Azure DevOps Management Assistant
     <br>~
-    <a href="https://CruxHire.com/about">About</a>
+    <a href="https://aiontime.com/about">About</a>
     ·
-    <a href="https://CruxHire.com">Website</a> ~
+    <a href="https://aiontime.com">Website</a> ~
   </p>
 </p>
 
-<img src="public/_static/og.jpg">
 
-## About CruxHire AI
+## About AionTime AI
 
-CruxHire AI is an intelligent recruitment automation platform designed to streamline talent acquisition. Leveraging AI, it helps recruiters save time and identify suitable candidates efficiently.
+AionTime AI is an intelligent agent for Azure DevOps designed to streamline project management tasks. Leveraging AI in an agentic workflow, it helps teams optimize their DevOps processes while keeping humans in the loop for critical decisions.
 
-## Key Features (Based on Current Codebase)
+## Key Features
 
-- **Job Posting & Management:** Create, manage, and track job posts with details like title, description, company, status (Active, Closed, Draft), employment type, workplace type, location, and salary.
-- **Candidate Management:** Store and manage candidate profiles including name, email, address, CV URL, skills, work experience, education, and achievements.
-- **AI-Powered Matching:** (Implicitly supported by data model) Facilitates matching candidates to job posts based on skills and experience. Includes features for skill weighting on job posts.
-- **Organization & User Management:** Supports multiple users within organizations with roles (Owner, Admin, User) and invitation system.
-- **Tagging System:** Categorize candidates, posts, or documents using customizable tags.
-- **Integrations:**
-  - **Authentication:** Google OAuth (`next-auth`).
-  - **Database:** PostgreSQL with Prisma ORM.
-  - **AI:** Groq API for LLM tasks, AWS Bedrock, AWS Textract for document analysis (optional, based on env vars).
-  - **Email:** Nodemailer/Resend for email communication (`react-email` for templates).
-  - **Payments:** Stripe for subscription management (optional, based on env vars).
-  - **Storage:** AWS S3 for file storage (e.g., CVs) (optional, based on env vars).
-  - **ATS/Job Boards:** Potential integration points for ATS (Workday, Greenhouse etc.) and Job Websites (LinkedIn, Indeed etc.) defined in schema, but implementation details require further code review.
+- **Task Management:** Create, manage, and track work items with intelligent prioritization, status monitoring, and automated updates.
+- **Sprint Planning Assistant:** AI-driven recommendations for sprint planning based on team velocity, capacity, and work item complexity.
+- **Work Item Analysis:** Automatically analyze and categorize work items, identify dependencies, and suggest optimal workflows.
+- **Risk Assessment:** Proactively identify potential roadblocks or delays with predictive analysis of work patterns and historical data.
+- **Status Reporting:** Generate comprehensive status reports with minimal manual intervention while highlighting key insights.
+- **Human-in-the-Loop Workflow:** All AI recommendations can be reviewed, modified, or approved by team members before implementation.
+- **Integration Ecosystem:**
+  - **Azure DevOps:** Deep integration with Azure Boards, Repos, Pipelines, and Test Plans.
+  - **Authentication:** Microsoft/Azure AD OAuth for secure access.
+  - **Database:** PostgreSQL with Prisma ORM for data persistence.
+  - **AI:** Azure OpenAI Service with custom models optimized for DevOps contexts.
+  - **Communication:** Teams integration for notifications and approvals.
+  - **Analytics:** Power BI integration for advanced reporting and visualization.
 
 ## Project Structure
 
 ```
-cruxhire-ai/
+aiontime-ai/
 ├── app/                 # Next.js App Router: Pages, API routes, layouts
-├── components/          # Shared UI components (likely Shadcn UI based)
+├── components/          # Shared UI components
 ├── lib/                 # Utility functions, helpers, configurations
 ├── actions/             # Server Actions for backend logic
 ├── prisma/              # Database schema and migrations
 ├── public/              # Static assets (images, fonts)
 ├── styles/              # Global styles, Tailwind base
 ├── types/               # TypeScript type definitions
-├── emails/              # React Email templates
+├── emails/              # Email templates for notifications
 ├── config/              # Application configuration files
-├── content/             # MDX content (if used with contentlayer)
+├── content/             # MDX content for documentation
 ├── hooks/               # Custom React hooks
-├── scripts/             # Utility scripts (e.g., seeding)
+├── scripts/             # Utility scripts
 ├── .github/             # GitHub Actions workflows
 ├── .husky/              # Git hooks configuration
 ├── tests/               # Unit/Integration tests
-├── auth.ts              # Authentication configuration (Auth.js v5)
+├── auth.ts              # Authentication configuration
 ├── middleware.ts        # Next.js middleware
 ├── next.config.ts       # Next.js configuration
 ├── tailwind.config.ts   # Tailwind CSS configuration
@@ -73,8 +72,8 @@ cruxhire-ai/
 **UI & Styling:**
 
 - [Tailwind CSS](https://tailwindcss.com/)
-- [shadcn/ui](https://ui.shadcn.com/) (likely, based on common practice)
-- [Radix UI](https://www.radix-ui.com/) (underlying shadcn/ui)
+- [shadcn/ui](https://ui.shadcn.com/)
+- [Radix UI](https://www.radix-ui.com/)
 - [Lucide Icons](https://lucide.dev/)
 
 **Backend & Database:**
@@ -85,30 +84,24 @@ cruxhire-ai/
 
 **Authentication:**
 
-- [Auth.js v5](https://authjs.dev/) (formerly NextAuth.js)
+- [Auth.js v5](https://authjs.dev/) with Azure AD integration
 
-**AI & Data Processing:**
+**AI & DevOps Integration:**
 
-- [Groq SDK](https://console.groq.com/docs/sdks)
-- [AWS SDK (Bedrock, S3, Textract)](https://aws.amazon.com/sdk-for-javascript/)
-- [PDF Parsing Libraries (`pdf-parse`, `pdfjs-dist`)](https://mozilla.github.io/pdf.js/)
-
-**Email:**
-
-- [Resend](https://resend.com/) / [Nodemailer](https://nodemailer.com/)
-- [React Email](https://react.email/)
+- [Azure OpenAI Service](https://azure.microsoft.com/en-us/products/ai-services/openai-service)
+- [Azure DevOps REST API](https://docs.microsoft.com/en-us/rest/api/azure/devops)
+- [Microsoft Graph API](https://developer.microsoft.com/en-us/graph) (for Teams integration)
 
 **State Management:**
 
-- [Zustand](https://zustand-demo.pmnd.rs/) (likely for client-side state)
+- [Zustand](https://zustand-demo.pmnd.rs/) (for client-side state)
 
 **Deployment & Infrastructure:**
 
-- **Cloud Provider:** AWS (Amplify, CloudFront, S3, EC2/Fargate via Docker)
-- **AI Services:** AWS SageMaker (for model deployment/hosting), AWS Bedrock
-- **Email:** AWS SES (Simple Email Service)
+- **Cloud Provider:** Microsoft Azure (App Service, Container Apps)
+- **AI Services:** Azure OpenAI, Azure Machine Learning
 - **Containerization:** Docker
-- **CI/CD:** GitHub Actions (potentially, based on standard practices)
+- **CI/CD:** GitHub Actions and Azure DevOps Pipelines
 
 **Environment Variable Management:**
 
@@ -120,18 +113,18 @@ cruxhire-ai/
 
 - Node.js 18+ or Bun
 - PostgreSQL Database Instance
+- Azure DevOps Organization and Project
+- Azure AD Application Registration
 - Required API Keys (see `.env.example` and `env.mjs`)
 
 ### Required Environment Variables
 
 The application uses `@t3-oss/env-nextjs` for runtime environment variable validation (`env.mjs`). Key variables include:
 
-- **Authentication:** `AUTH_SECRET`, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`
+- **Authentication:** `AUTH_SECRET`, `AZURE_AD_CLIENT_ID`, `AZURE_AD_CLIENT_SECRET`, `AZURE_AD_TENANT_ID`
 - **Database:** `DATABASE_URL`
-- **AI:** `GROQ_API_KEY`, `GROQ_MODEL` (plus AWS keys if used)
-- **Email:** `EMAIL_FROM`, SES/SMTP credentials
-- **AWS:** `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION`, `AWS_S3_BUCKET` (if using S3/Bedrock/Textract)
-- **Stripe:** API Key, Webhook Secret, Plan IDs (if using payments)
+- **Azure DevOps:** `AZURE_DEVOPS_PAT`, `AZURE_DEVOPS_ORGANIZATION`, `AZURE_DEVOPS_PROJECT`
+- **AI:** `AZURE_OPENAI_API_KEY`, `AZURE_OPENAI_ENDPOINT`, `AZURE_OPENAI_DEPLOYMENT_NAME`
 - **Application:** `NEXT_PUBLIC_APP_URL`
 
 Refer to `.env.example` for a full list.
@@ -140,8 +133,8 @@ Refer to `.env.example` for a full list.
 
 1.  **Clone the repository:**
     ```bash
-    git clone https://github.com/Ashref-dev/cruxhire
-    cd cruxhire
+    git clone https://github.com/yourusername/aiontime-ai
+    cd aiontime-ai
     ```
 2.  **Install dependencies:**
     ```bash
@@ -167,13 +160,12 @@ Refer to `.env.example` for a full list.
 
 ## Deployment
 
-This project is configured for deployment on **AWS** using **Docker**.
+This project is configured for deployment on **Microsoft Azure** using **Docker**.
 
-- **Hosting:** AWS Amplify or EC2/Fargate with CloudFront for CDN.
-- **Database:** AWS RDS (PostgreSQL) or managed service.
-- **Storage:** AWS S3 for file uploads (CVs, etc.).
-- **AI:** AWS SageMaker for custom models, AWS Bedrock for managed AI services.
-- **Email:** AWS SES.
-- **CI/CD:** GitHub Actions (or AWS CodePipeline) can be used to automate builds and deployments from the `Dockerfile`.
+- **Hosting:** Azure App Service or Azure Container Apps
+- **Database:** Azure Database for PostgreSQL
+- **Authentication:** Azure AD
+- **AI:** Azure OpenAI Service
+- **CI/CD:** GitHub Actions with Azure integration or Azure DevOps Pipelines
 
-Refer to the `Dockerfile` for container build instructions. Specific AWS deployment steps will depend on the chosen services (Amplify vs. EC2/Fargate, etc.).
+Refer to the `Dockerfile` for container build instructions.
