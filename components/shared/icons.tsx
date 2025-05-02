@@ -345,47 +345,49 @@ export const Icons = {
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="158.996 122.895 170.766 205.411"
-      width="170.766px"
-      height="205.411px"
+      width="170.766"
+      height="205.411"
+      aria-hidden="true"
+      focusable="false"
       {...props}
     >
-      <linearGradient
-        id="a"
-        gradientUnits="userSpaceOnUse"
-        x1="5.615"
-        x2="32.789"
-        y1="31.179"
-        y2="31.179"
-        gradientTransform="matrix(6.284186, 0, 0, 6.284186, 123.708344, 109.409958)"
-      >
-        <stop offset="0" stopColor="#8930fd" />
-        <stop offset="1" stopColor="#49ccf9" />
-      </linearGradient>
-      <linearGradient
-        id="b"
-        gradientUnits="userSpaceOnUse"
-        x1="5.941"
-        x2="31.978"
-        y1="13.086"
-        y2="13.086"
-        gradientTransform="matrix(6.284186, 0, 0, 6.284186, 123.708344, 109.409958)"
-      >
-        <stop offset="0" stopColor="#ff02f0" />
-        <stop offset="1" stopColor="#ffc800" />
-      </linearGradient>
+      <defs>
+        <linearGradient
+          id="clickup-gradient-a"
+          gradientUnits="userSpaceOnUse"
+          x1="5.615"
+          x2="32.789"
+          y1="31.179"
+          y2="31.179"
+          gradientTransform="matrix(6.284186, 0, 0, 6.284186, 123.708344, 109.409958)"
+        >
+          <stop offset="0" stopColor="#8930fd" />
+          <stop offset="1" stopColor="#49ccf9" />
+        </linearGradient>
+        <linearGradient
+          id="clickup-gradient-b"
+          gradientUnits="userSpaceOnUse"
+          x1="5.941"
+          x2="31.978"
+          y1="13.086"
+          y2="13.086"
+          gradientTransform="matrix(6.284186, 0, 0, 6.284186, 123.708344, 109.409958)"
+        >
+          <stop offset="0" stopColor="#ff02f0" />
+          <stop offset="1" stopColor="#ffc800" />
+        </linearGradient>
+      </defs>
       <path
         clipRule="evenodd"
         d="M 158.996 280.716 L 190.511 256.515 C 207.252 278.416 225.036 288.514 244.837 288.514 C 264.532 288.514 281.814 278.535 297.801 256.804 L 329.762 280.42 C 306.699 311.753 278.031 328.306 244.837 328.306 C 211.751 328.306 182.806 311.86 158.996 280.71 L 158.996 280.716 Z"
-        fill="url(#a)"
+        fill="url(#clickup-gradient-a)"
         fillRule="evenodd"
-        transform="matrix(1, 0, 0, 1, 0, 7.105427357601002e-15)"
       />
       <path
         clipRule="evenodd"
         d="M 243.059 175.537 L 186.973 223.988 L 161.044 193.843 L 243.178 122.895 L 324.665 193.9 L 298.618 223.938 L 243.059 175.537 Z"
-        fill="url(#b)"
+        fill="url(#clickup-gradient-b)"
         fillRule="evenodd"
-        transform="matrix(1, 0, 0, 1, 0, 7.105427357601002e-15)"
       />
     </svg>
   ),
