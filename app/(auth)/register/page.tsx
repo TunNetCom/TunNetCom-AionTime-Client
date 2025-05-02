@@ -1,11 +1,4 @@
-import { Suspense } from "react";
-import Link from "next/link";
 import { redirect } from "next/navigation";
-
-import { cn } from "@/lib/utils";
-import { buttonVariants } from "@/components/ui/button";
-import { UserAuthForm } from "@/components/forms/user-auth-form";
-import { Icons } from "@/components/shared/icons";
 
 export const metadata = {
   title: "Create an account",

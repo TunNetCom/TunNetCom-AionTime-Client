@@ -29,7 +29,6 @@
     "@hookform/resolvers": "^3.9.1",
     "@langchain/community": "^0.3.14",
     "@langchain/core": "^0.3.18",
-
     "@mdx-js/react": "^3.1.0",
     "@next/mdx": "^14.2.17",
     "@prisma/client": "^6.1.0",
@@ -97,7 +96,7 @@
     "react-email": "^3.0.4",
     "react-hook-form": "^7.53.2",
     "react-textarea-autosize": "^8.5.5",
-    "recharts": "^2.15.1",
+    "recharts": "^2.15.3",
     "resend": "^4.0.1",
     "sharp": "^0.33.5",
     "shiki": "^1.22.2",

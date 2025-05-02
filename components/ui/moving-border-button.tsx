@@ -12,7 +12,7 @@ import {
 import { cn } from "@/lib/utils";
 
 export function MovingBorderButton({
-  borderRadius = "1.75rem",
+  borderRadius = "0.75rem",
   children,
   as: Component = "button",
   containerClassName,

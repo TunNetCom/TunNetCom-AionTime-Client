@@ -7,7 +7,7 @@ const site_url = env.NEXT_PUBLIC_APP_URL;
 export const siteConfig: SiteConfig = {
   name: "AionTime AI",
   description:
-    "AionTime AI is a cutting-edge platform designed to streamline the time tracking process. It leverages advanced AI algorithms to track time, ensuring that recruiters can quickly identify the best candidates for their job openings. The platform provides detailed insights and analytics, making the hiring process more efficient and effective.",
+    "AionTime AI is an intelligent agent for Azure DevOps designed to streamline project management tasks. Leveraging AI in an agentic workflow, it helps teams optimize their DevOps processes while keeping humans in the loop for critical decisions.",
   url: site_url,
   ogImage: `${site_url}/_static/og.jpg`,
   links: {

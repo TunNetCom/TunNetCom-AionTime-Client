@@ -1,69 +1,84 @@
-// @ts-ignore
-import { features } from "@/config/landing";
-import { HeaderSection } from "@/components/shared/header-section";
-import { Icons } from "@/components/shared/icons";
+import {
+    Cpu,
+    Fingerprint,
+    Pencil,
+    Settings2,
+    Sparkles,
+    Zap,
+} from "lucide-react";
 import MaxWidthWrapper from "@/components/shared/max-width-wrapper";
-
-import { AnimatedIcon } from "../shared/animated-icon";
 
 export default function Features() {
   return (
-    <section>
-      <div className="pb-6 pt-28">
-        <MaxWidthWrapper>
-          <AnimatedIcon
-            className="mx-auto size-24"
-            icon="barChart"
-            playMode="loop"
-            speed={0.7}
-          />
-          <HeaderSection
-            label="Features to aid your success"
-            title="Elevate Your Interview Game"
-            subtitle="Discover our comprehensive suite of AI-powered tools designed to transform your interview preparation experience and boost your chances of landing your dream job."
-          />
+    <section className="py-20">
+      <MaxWidthWrapper>
+        <div className="mx-auto max-w-xl space-y-8 text-center md:space-y-12">
+          <h2 className="text-balance font-heading text-4xl font-medium lg:text-5xl">
+            Simplify management across your DevOps tools
+          </h2>
+          <p className="text-muted-foreground">
+            AionTime unifies your workflow by syncing data between Jira, Azure DevOps, 
+            and other platforms while leveraging AI to automate repetitive tasks.
+          </p>
+        </div>
 
-          <div className="mt-12 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {features.map((feature) => {
-              const Icon = Icons[feature.icon || "nextjs"];
-              return (
-                <div
-                  className="group relative overflow-hidden rounded-2xl border bg-background p-5 md:p-8"
-                  key={feature.title}
-                >
-                  <div
-                    aria-hidden="true"
-                    className="absolute inset-0 aspect-video -translate-y-1/2 rounded-full border bg-gradient-to-b from-purple-500/80 to-white opacity-25 blur-2xl duration-300 group-hover:-translate-y-1/4 dark:from-white dark:to-white dark:opacity-5 dark:group-hover:opacity-10"
-                  />
-                  <div className="relative">
-                    <div className="relative flex size-12 rounded-2xl border border-border shadow-sm *:relative *:m-auto *:size-6">
-                      <Icon />
-                    </div>
-
-                    <p className="mt-6 pb-6 text-muted-foreground">
-                      {feature.description}
-                    </p>
-
-                    {/* <div className="-mb-5 flex gap-3 border-t border-muted py-4 md:-mb-7">
-                      <Button
-                        variant="secondary"
-                        size="sm"
-                        rounded="xl"
-                        className="px-4"
-                      >
-                        <Link href="/" className="flex items-center gap-2">
-                          <span>Visit the site</span>
-                          <Icons.arrowUpRight className="size-4" />
-                        </Link>
-                      </Button>
-                    </div> */}
-                  </div>
-                </div>
-              );
-            })}
+        <div className="relative mx-auto mt-12 grid divide-x divide-y border *:p-12 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="space-y-3">
+            <div className="flex items-center gap-2">
+              <Zap className="size-4" />
+              <h3 className="text-sm font-medium">Seamless Sync</h3>
+            </div>
+            <p className="text-sm">
+              Automatically sync work items between Jira, Azure DevOps, and other platforms without manual effort.
+            </p>
           </div>
-        </MaxWidthWrapper>
-      </div>
+          <div className="space-y-2">
+            <div className="flex items-center gap-2">
+              <Cpu className="size-4" />
+              <h3 className="text-sm font-medium">AI Agent</h3>
+            </div>
+            <p className="text-sm">
+              Intelligent assistant that manages updates, suggests priorities, and automates routine tasks.
+            </p>
+          </div>
+          <div className="space-y-2">
+            <div className="flex items-center gap-2">
+              <Fingerprint className="size-4" />
+              <h3 className="text-sm font-medium">Secure Access</h3>
+            </div>
+            <p className="text-sm">
+              Enterprise-grade security with Azure AD integration and fine-grained permission controls.
+            </p>
+          </div>
+          <div className="space-y-2">
+            <div className="flex items-center gap-2">
+              <Pencil className="size-4" />
+              <h3 className="text-sm font-medium">Flexible Workflows</h3>
+            </div>
+            <p className="text-sm">
+              Adapt to your team&apos;s process with customizable sync rules and approval workflows.
+            </p>
+          </div>
+          <div className="space-y-2">
+            <div className="flex items-center gap-2">
+              <Settings2 className="size-4" />
+              <h3 className="text-sm font-medium">Full Control</h3>
+            </div>
+            <p className="text-sm">
+              Human-in-the-loop design lets you review and approve AI suggestions before implementation.
+            </p>
+          </div>
+          <div className="space-y-2">
+            <div className="flex items-center gap-2">
+              <Sparkles className="size-4" />
+              <h3 className="text-sm font-medium">Smart Insights</h3>
+            </div>
+            <p className="text-sm">
+              AI-powered analytics across all your tools to identify bottlenecks and optimize team performance.
+            </p>
+          </div>
+        </div>
+      </MaxWidthWrapper>
     </section>
   );
 }

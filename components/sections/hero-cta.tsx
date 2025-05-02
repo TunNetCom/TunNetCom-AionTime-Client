@@ -19,7 +19,7 @@ const HeroCTA = () => {
       {session ? (
         <Link href="/dashboard" prefetch={true}>
           <MovingBorderButton
-            borderRadius="1rem"
+         
             className="border-neutral-200 bg-white font-medium text-black dark:border-slate-800 dark:bg-slate-950 dark:text-white"
           >
             Go to Dashboard
@@ -28,7 +28,7 @@ const HeroCTA = () => {
         </Link>
       ) : status === "unauthenticated" ? (
         <MovingBorderButton
-          borderRadius="1rem"
+     
           className="border-neutral-200 bg-white font-medium text-black disabled:opacity-50 dark:border-slate-800 dark:bg-slate-950 dark:text-white"
           onClick={() => setShowSignInModal(true)}
         >

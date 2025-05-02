@@ -1,5 +1,5 @@
 import localFont from "next/font/local";
-import { Inter as FontSans, Sora } from "next/font/google";
+import { Inter as FontSans, Sora, Space_Grotesk } from "next/font/google";
 
 export const fontSans = FontSans({
   subsets: ["latin"],
@@ -11,8 +11,8 @@ export const fontUrban = Sora({
   variable: "--font-urban",
 })
 
-export const fontHeading = localFont({
-  src: "./CalSans-SemiBold.woff2",
+export const fontHeading = Space_Grotesk({
+  subsets: ["latin"],
   variable: "--font-heading",
 })
 

@@ -12,24 +12,24 @@ export const sidebarLinks: SidebarNavItem[] = [
         title: "Dashboard",
         authorizeOnly: UserRole.USER,
       },
-      {
-        href: "/posts",
-        icon: "history",
-        title: "Posts",
-        authorizeOnly: UserRole.USER,
-      },
-      {
-        href: "/candidates",
-        icon: "user",
-        title: "Candidates",
-        authorizeOnly: UserRole.USER,
-      },
-      {
-        href: "/archive",
-        icon: "package",
-        title: "Archive",
-        authorizeOnly: UserRole.USER,
-      },
+      // {
+      //   href: "/posts",
+      //   icon: "history",
+      //   title: "Posts",
+      //   authorizeOnly: UserRole.USER,
+      // },
+      // {
+      //   href: "/candidates",
+      //   icon: "user",
+      //   title: "Candidates",
+      //   authorizeOnly: UserRole.USER,
+      // },
+      // {
+      //   href: "/archive",
+      //   icon: "package",
+      //   title: "Archive",
+      //   authorizeOnly: UserRole.USER,
+      // },
       //! Admin routes
       // {
       //   href: "/admin",

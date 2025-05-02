@@ -172,13 +172,21 @@ export const Icons = {
   lineChart: LineChart,
   logo: ({ ...props }: LucideProps) => (
     <svg
-      width="152"
-      height="139"
-      viewBox="0 0 152 139"
-      fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
       {...props}
-    ></svg>
+    >
+      <path d="M12 6v12" />
+      <path d="M17.196 9 6.804 15" />
+      <path d="m6.804 9 10.392 6" />
+    </svg>
   ),
   media: Image,
   messages: MessagesSquare,
@@ -222,4 +230,178 @@ export const Icons = {
   pieChart: PieChart,
   buildings: Building,
   filePenLine: FilePenLine,
+  azure: ({ ...props }: LucideProps) => (
+    <svg viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg" {...props}>
+      <defs>
+        <linearGradient
+          id="a"
+          x1="-1032.17"
+          x2="-1059.21"
+          y1="145.31"
+          y2="65.43"
+          gradientTransform="matrix(1 0 0 -1 1075 158)"
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop offset="0" stopColor="#114a8b" />
+          <stop offset="1" stopColor="#0669bc" />
+        </linearGradient>
+        <linearGradient
+          id="b"
+          x1="-1023.73"
+          x2="-1029.98"
+          y1="108.08"
+          y2="105.97"
+          gradientTransform="matrix(1 0 0 -1 1075 158)"
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop offset="0" stopOpacity=".3" />
+          <stop offset=".07" stopOpacity=".2" />
+          <stop offset=".32" stopOpacity=".1" />
+          <stop offset=".62" stopOpacity=".05" />
+          <stop offset="1" stopOpacity="0" />
+        </linearGradient>
+        <linearGradient
+          id="c"
+          x1="-1027.16"
+          x2="-997.48"
+          y1="147.64"
+          y2="68.56"
+          gradientTransform="matrix(1 0 0 -1 1075 158)"
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop offset="0" stopColor="#3ccbf4" />
+          <stop offset="1" stopColor="#2892df" />
+        </linearGradient>
+      </defs>
+      <path
+        fill="url(#a)"
+        d="M33.34 6.54h26.04l-27.03 80.1a4.15 4.15 0 0 1-3.94 2.81H8.15a4.14 4.14 0 0 1-3.93-5.47L29.4 9.38a4.15 4.15 0 0 1 3.94-2.83z"
+      />
+      <path
+        fill="#0078d4"
+        d="M71.17 60.26H29.88a1.91 1.91 0 0 0-1.3 3.31l26.53 24.76a4.17 4.17 0 0 0 2.85 1.13h23.38z"
+      />
+      <path
+        fill="url(#b)"
+        d="M33.34 6.54a4.12 4.12 0 0 0-3.95 2.88L4.25 83.92a4.14 4.14 0 0 0 3.91 5.54h20.79a4.44 4.44 0 0 0 3.4-2.9l5.02-14.78 17.91 16.7a4.24 4.24 0 0 0 2.67.97h23.29L71.02 60.26H41.24L59.47 6.55z"
+      />
+      <path
+        fill="url(#c)"
+        d="M66.6 9.36a4.14 4.14 0 0 0-3.93-2.82H33.65a4.15 4.15 0 0 1 3.93 2.82l25.18 74.62a4.15 4.15 0 0 1-3.93 5.48h29.02a4.15 4.15 0 0 0 3.93-5.48z"
+      />
+    </svg>
+  ),
+  jira: ({ ...props }: LucideProps) => (
+    <svg
+      height="2500"
+      preserveAspectRatio="xMidYMid"
+      width="2500"
+      xmlns="http://www.w3.org/2000/svg"
+      xmlnsXlink="http://www.w3.org/1999/xlink"
+      viewBox="0 -30.632388516510233 255.324 285.95638851651023"
+      {...props}
+    >
+      <linearGradient id="a">
+        <stop offset=".18" stopColor="#0052cc" />
+        <stop offset="1" stopColor="#2684ff" />
+      </linearGradient>
+      <linearGradient
+        id="b"
+        x1="98.031%"
+        x2="58.888%"
+        y1=".161%"
+        y2="40.766%"
+      />
+      <linearGradient
+        id="c"
+        x1="100.665%"
+        x2="55.402%"
+        y1=".455%"
+        y2="44.727%"
+      />
+      <path
+        d="M244.658 0H121.707a55.502 55.502 0 0 0 55.502 55.502h22.649V77.37c.02 30.625 24.841 55.447 55.466 55.467V10.666C255.324 4.777 250.55 0 244.658 0z"
+        fill="#2684ff"
+      />
+      <path
+        d="M183.822 61.262H60.872c.019 30.625 24.84 55.447 55.466 55.467h22.649v21.938c.039 30.625 24.877 55.43 55.502 55.43V71.93c0-5.891-4.776-10.667-10.667-10.667z"
+        fill="url(#b)"
+      />
+      <path
+        d="M122.951 122.489H0c0 30.653 24.85 55.502 55.502 55.502h22.72v21.867c.02 30.597 24.798 55.408 55.396 55.466V133.156c0-5.891-4.776-10.667-10.667-10.667z"
+        fill="url(#c)"
+      />
+    </svg>
+  ),
+  asana: ({ ...props }: LucideProps) => (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 251 232">
+      <path
+        fill="#F06A6A"
+        d="M179.383 54.3733c0 30.0166-24.337 54.3737-54.354 54.3737-30.0355 0-54.3733-24.3382-54.3733-54.3737S94.9935 0 125.029 0c30.017 0 54.354 24.3378 54.354 54.3733ZM54.3928 122.33c-30.0166 0-54.373269 24.338-54.373269 54.355 0 30.017 24.337769 54.373 54.373269 54.373 30.0354 0 54.3732-24.338 54.3732-54.373 0-30.017-24.3378-54.355-54.3732-54.355Zm141.2532 0c-30.035 0-54.373 24.338-54.373 54.374 0 30.035 24.338 54.373 54.373 54.373 30.017 0 54.374-24.338 54.374-54.373 0-30.036-24.338-54.374-54.374-54.374Z"
+      />
+    </svg>
+  ),
+  clickUp: ({ ...props }: LucideProps) => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="158.996 122.895 170.766 205.411"
+      width="170.766px"
+      height="205.411px"
+      {...props}
+    >
+      <linearGradient
+        id="a"
+        gradientUnits="userSpaceOnUse"
+        x1="5.615"
+        x2="32.789"
+        y1="31.179"
+        y2="31.179"
+        gradientTransform="matrix(6.284186, 0, 0, 6.284186, 123.708344, 109.409958)"
+      >
+        <stop offset="0" stopColor="#8930fd" />
+        <stop offset="1" stopColor="#49ccf9" />
+      </linearGradient>
+      <linearGradient
+        id="b"
+        gradientUnits="userSpaceOnUse"
+        x1="5.941"
+        x2="31.978"
+        y1="13.086"
+        y2="13.086"
+        gradientTransform="matrix(6.284186, 0, 0, 6.284186, 123.708344, 109.409958)"
+      >
+        <stop offset="0" stopColor="#ff02f0" />
+        <stop offset="1" stopColor="#ffc800" />
+      </linearGradient>
+      <path
+        clipRule="evenodd"
+        d="M 158.996 280.716 L 190.511 256.515 C 207.252 278.416 225.036 288.514 244.837 288.514 C 264.532 288.514 281.814 278.535 297.801 256.804 L 329.762 280.42 C 306.699 311.753 278.031 328.306 244.837 328.306 C 211.751 328.306 182.806 311.86 158.996 280.71 L 158.996 280.716 Z"
+        fill="url(#a)"
+        fillRule="evenodd"
+        transform="matrix(1, 0, 0, 1, 0, 7.105427357601002e-15)"
+      />
+      <path
+        clipRule="evenodd"
+        d="M 243.059 175.537 L 186.973 223.988 L 161.044 193.843 L 243.178 122.895 L 324.665 193.9 L 298.618 223.938 L 243.059 175.537 Z"
+        fill="url(#b)"
+        fillRule="evenodd"
+        transform="matrix(1, 0, 0, 1, 0, 7.105427357601002e-15)"
+      />
+    </svg>
+  ),
+  linear: ({ ...props }: LucideProps) => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="200"
+      height="200"
+      fill="none"
+      viewBox="0 0 100 100"
+      {...props}
+    >
+      <path
+        fill="#5E6AD2"
+        d="M1.225 61.523c-.222-.949.908-1.546 1.597-.857l36.512 36.512c.69.69.092 1.82-.857 1.597-18.425-4.323-32.93-18.827-37.252-37.252ZM.002 46.889a.99.99 0 0 0 .29.76L52.35 99.71c.201.2.478.307.76.29 2.37-.149 4.695-.46 6.963-.927.765-.157 1.03-1.096.478-1.648L2.576 39.448c-.552-.551-1.491-.286-1.648.479a50.067 50.067 0 0 0-.926 6.962ZM4.21 29.705a.988.988 0 0 0 .208 1.1l64.776 64.776c.289.29.726.375 1.1.208a49.908 49.908 0 0 0 5.185-2.684.981.981 0 0 0 .183-1.54L8.436 24.336a.981.981 0 0 0-1.541.183 49.896 49.896 0 0 0-2.684 5.185Zm8.448-11.631a.986.986 0 0 1-.045-1.354C21.78 6.46 35.111 0 49.952 0 77.592 0 100 22.407 100 50.048c0 14.84-6.46 28.172-16.72 37.338a.986.986 0 0 1-1.354-.045L12.659 18.074Z"
+      />
+    </svg>
+  ),
 };
