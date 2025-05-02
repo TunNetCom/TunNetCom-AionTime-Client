@@ -1,0 +1,127 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  OWNER
+  ADMIN
+  USER
+}
+
+enum InvitationStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+  EXPIRED
+}
+
+model Account {
+  id                String   @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @default(now()) @map("updated_at")
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("sessions")
+}
+
+model User {
+  id                     String        @id @default(cuid())
+  name                   String?
+  email                  String?       @unique
+  password               String?
+  emailVerified          DateTime?
+  image                  String?
+  role                   UserRole      @default(USER)
+  organizationId         String?
+  organization           Organization? @relation(fields: [organizationId], references: [id], onDelete: SetNull)
+  stripeCustomerId       String?       @unique @map("stripe_customer_id")
+  stripeSubscriptionId   String?       @unique @map("stripe_subscription_id")
+  stripePriceId          String?       @map("stripe_price_id")
+  stripeCurrentPeriodEnd DateTime?     @map("stripe_current_period_end")
+  createdAt              DateTime      @default(now()) @map("created_at")
+  updatedAt              DateTime      @default(now()) @map("updated_at")
+  accounts               Account[]
+  sessions               Session[]
+
+  @@index([organizationId])
+  @@map("users")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+}
+
+model Organization {
+  id               String               @id @default(cuid())
+  name             String
+  email            String?
+  color            String?
+  integrationType  String?              // azure, jira, clickup, asana
+  accessToken      String?              // PAT or access token for the integration
+  integrationUrl   String?              // URL for the integration (org URL, etc.)
+  users            User[]
+  invitations      OrganizationInvite[]
+  createdAt        DateTime             @default(now())
+  updatedAt        DateTime             @updatedAt
+
+  @@map("organizations")
+}
+
+model OrganizationInvite {
+  id             String           @id @default(cuid())
+  email          String
+  status         InvitationStatus @default(PENDING)
+  role           UserRole         @default(USER)
+  organizationId String
+  organization   Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  expiresAt      DateTime
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  @@unique([email, organizationId])
+  @@map("organization_invites")
+}
+
+model NewsletterSubscriber {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("newsletter_subscribers")
+}
