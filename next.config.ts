@@ -8,8 +8,6 @@ import { withContentlayer } from "next-contentlayer2";
 import "./env.mjs";
 
 const nextConfig: NextConfig = {
-  SKIP_ENV_VALIDATION: true,
-
   output: "standalone",
 
   experimental: {

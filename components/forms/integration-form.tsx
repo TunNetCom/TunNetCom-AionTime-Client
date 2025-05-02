@@ -12,13 +12,13 @@ import { ShieldCheck, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
-    Form,
-    FormControl,
-    FormDescription,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 import { Separator } from "@/components/ui/separator";
 import { Icons } from "@/components/shared/icons";
@@ -106,7 +106,7 @@ export function IntegrationForm({ integrationType, onSuccess }: IntegrationFormP
                   <Input type="email" placeholder="admin@yourcompany.com" {...field} className="h-9" />
                 </FormControl>
                 <FormDescription className="text-xs">
-                  We'll use this for important notifications
+                  We&apos;ll use this for important notifications
                 </FormDescription>
                 <FormMessage className="text-xs" />
               </FormItem>
@@ -187,7 +187,7 @@ export function IntegrationForm({ integrationType, onSuccess }: IntegrationFormP
                     />
                   </FormControl>
                   <FormDescription className="text-xs">
-                    If left empty, we'll try to detect the organization from your PAT
+                    If left empty, we&apos;ll try to detect the organization from your PAT
                   </FormDescription>
                   <FormMessage className="text-xs" />
                 </FormItem>
