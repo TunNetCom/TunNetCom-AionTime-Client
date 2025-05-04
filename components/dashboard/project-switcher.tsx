@@ -16,7 +16,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-import CreateOrganization from "../forms/create-org";
+import CreateOrganizationModal from "../modals/create-organization-modal";
 
 export default function ProjectSwitcher({
   large = false,
@@ -133,10 +133,11 @@ function ProjectList({
           <div className="flex flex-1 items-center justify-between gap-2">
             <div className="flex flex-col">
               <span
-                className={`truncate text-sm ${selected?.id === org.id
-                  ? "font-medium text-foreground"
-                  : "font-normal"
-                  }`}
+                className={`truncate text-sm ${
+                  selected?.id === org.id
+                    ? "font-medium text-foreground"
+                    : "font-normal"
+                }`}
               >
                 {org.name}
               </span>
@@ -149,7 +150,7 @@ function ProjectList({
           </div>
         </div>
       ))}
-      <CreateOrganization setOpenPopover={setOpenPopover} />
+      <CreateOrganizationModal setOpenPopover={setOpenPopover} />
     </div>
   );
 }

@@ -8,7 +8,6 @@ import { withContentlayer } from "next-contentlayer2";
 import "./env.mjs";
 
 const nextConfig: NextConfig = {
-  output: "standalone",
 
   experimental: {
     serverActions: {

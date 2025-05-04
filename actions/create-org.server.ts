@@ -20,7 +20,7 @@ const createOrgWithIntegrationSchema = z.object({
   color: z.string().min(1, "Color is required"),
   integrationType: z.enum(["azure", "jira", "clickup", "asana"]),
   accessToken: z.string().min(1, "Access token is required"),
-  integrationUrl: z.string().optional(),
+  integrationUrl: z.string().min(1, "Organization URL is required"),
 });
 
 type CreateOrgWithIntegrationInput = z.infer<typeof createOrgWithIntegrationSchema>;

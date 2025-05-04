@@ -6,8 +6,9 @@ FROM base AS deps
 WORKDIR /app
 
 # Copy package files and prisma schema
-COPY package.json bun.lockb ./
+COPY package.json bun.lock ./
 COPY prisma ./prisma
+
 COPY .env.production .env
 
 # Install dependencies and generate prisma client

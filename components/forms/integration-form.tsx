@@ -28,7 +28,7 @@ const integrationFormSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
   color: z.string().min(1, "Color is required"),
   accessToken: z.string().min(1, "Personal Access Token is required"),
-  integrationUrl: z.string().optional(),
+  integrationUrl: z.string().min(1, "Organization URL is required"),
 });
 
 type IntegrationFormValues = z.infer<typeof integrationFormSchema>;
@@ -59,6 +59,7 @@ export function IntegrationForm({ integrationType, onSuccess }: IntegrationFormP
       const result = await createOrganizationWithIntegration({
         ...values,
         integrationType,
+        integrationUrl: values.integrationUrl,
       });
 
       if (result.status === "error") {
