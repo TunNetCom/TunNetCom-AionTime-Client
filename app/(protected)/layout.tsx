@@ -5,6 +5,7 @@ import { sidebarLinks } from "@/config/dashboard";
 import { getOrgRole, getUserOrganization } from "@/lib/organization";
 import { getCurrentUser } from "@/lib/session";
 import { SearchCommand } from "@/components/dashboard/search-command";
+import { QuickActions } from "@/components/dashboard/quick-actions";
 import {
   DashboardSidebar,
   MobileSheetSidebar,
@@ -57,6 +58,7 @@ export default async function Dashboard({ children }: ProtectedLayoutProps) {
               <SearchCommand links={filteredLinks} />
             </div>
 
+            <QuickActions />
             <ModeToggle />
             <UserAccountNav />
           </MaxWidthWrapper>
