@@ -16,8 +16,6 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-import CreateOrganizationModal from "../modals/create-organization-modal";
-
 export default function ProjectSwitcher({
   large = false,
   organizations,
@@ -30,9 +28,25 @@ export default function ProjectSwitcher({
   const { data: session, status } = useSession();
   const [openPopover, setOpenPopover] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  // Log JWT token data
+  console.log("=== JWT Token Data ===");
+  console.log("Full session:", session);
+  console.log("Session user:", session?.user);
+  console.log("Organization ID from JWT:", session?.user?.organizationId);
+  console.log("Organization Name from JWT:", session?.user?.organizationName);
+  console.log("User role from JWT:", session?.user?.role);
+  console.log("Access token from JWT:", session?.user?.accessToken);
+  console.log("Session status:", status);
+  console.log("===================");
+
   if (!organizations || status === "loading" || loading) {
     return <ProjectSwitcherPlaceholder />;
   }
+
+  // Get organization name from session
+  const orgName = session?.user?.organizationName;
+  console.log("Organization name being displayed:", orgName);
 
   return (
     <Popover open={openPopover} onOpenChange={setOpenPopover}>
@@ -65,7 +79,7 @@ export default function ProjectSwitcher({
                 currentOrganization ? "" : "text-muted-foreground",
               )}
             >
-              {currentOrganization?.name ?? "No organizations yet"}
+              {orgName || currentOrganization?.name || "No organizations yet"}
             </span>
           </div>
         </div>
@@ -98,38 +112,29 @@ function ProjectList({
   setLoading: (loading: boolean) => void;
 }) {
   const router = useRouter();
-  const handleSwitchProject = async (id: string) => {
-    setLoading(true);
-    try {
-      await switchOrganization(id);
-      setOpenPopover(false);
-      setLoading(false);
-      router.refresh();
-    } catch (error) {
-      console.error(error);
-      setLoading(false);
-    }
-  };
+
   return (
     <div className="flex flex-col gap-1">
       {organizations.map((org) => (
         <div
           key={org.id}
           className={cn(
-            buttonVariants({ variant: "ghost" }),
-            "relative flex h-12 cursor-pointer items-center gap-3 p-3 text-muted-foreground hover:text-foreground",
+            "relative flex cursor-pointer select-none items-center rounded-md px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+            selected?.id === org.id && "bg-accent text-accent-foreground",
           )}
-          onClick={() => handleSwitchProject(org.id)}
+          onClick={async () => {
+            setLoading(true);
+            try {
+              await switchOrganization(org.id);
+              setOpenPopover(false);
+              router.refresh();
+            } catch (error) {
+              console.error("Failed to switch organization:", error);
+            } finally {
+              setLoading(false);
+            }
+          }}
         >
-          <Avatar className="size-7 shrink-0 rounded-lg border">
-            <AvatarFallback
-              style={{
-                backgroundColor: org.color ?? "rgb(203 213 225)",
-              }}
-            >
-              {org.name.substring(0, 2).toUpperCase()}
-            </AvatarFallback>
-          </Avatar>
           <div className="flex flex-1 items-center justify-between gap-2">
             <div className="flex flex-col">
               <span
@@ -150,7 +155,6 @@ function ProjectList({
           </div>
         </div>
       ))}
-      <CreateOrganizationModal setOpenPopover={setOpenPopover} />
     </div>
   );
 }

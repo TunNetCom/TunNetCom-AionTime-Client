@@ -102,7 +102,9 @@ export async function getOrgData(
 export async function getUserOrganization(
   userId: string,
 ): Promise<Organization | null> {
-  const user = await prisma.user.findUnique({
+  if (!userId) return null;
+
+  const user = await prisma.user.findFirst({
     where: { id: userId },
     include: {
       organization: true,
@@ -116,8 +118,11 @@ export async function getUserOrganization(
  * Check if a user has any organizations
  */
 export async function hasAnyOrganizations(userId: string): Promise<boolean> {
-  const user = await prisma.user.findUnique({
+  if (!userId) return false;
+
+  const user = await prisma.user.findFirst({
     where: { id: userId },
+    select: { organizationId: true },
   });
   return !!user?.organizationId;
 }
@@ -127,14 +132,15 @@ export async function hasAnyOrganizations(userId: string): Promise<boolean> {
  * @param organizationId - The ID of the organization
  */
 export async function getOrganizationInvites(organizationId: string) {
-  // @ts-ignore
-  return await prisma.invitation.findMany({
+  if (!organizationId) return [];
+
+  return await prisma.organizationInvite.findMany({
     where: {
       organizationId,
       status: "PENDING",
     },
     include: {
-      invitedBy: {
+      organization: {
         select: {
           id: true,
           name: true,

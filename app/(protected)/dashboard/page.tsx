@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { ArrowRight, BarChart3, BrainCircuit, Clock, KanbanSquare, Users } from "lucide-react";
 
 import { getCurrentUser } from "@/lib/session";
@@ -205,303 +206,168 @@ function SimplePieChart() {
 
 const Page = async () => {
   const user = await getCurrentUser();
-  const data = getStaticDashboardData();
+
+  if (!user) {
+    redirect("/");
+  }
+
+  const dashboardData = getStaticDashboardData();
 
   return (
     <div className="flex min-h-screen flex-col space-y-6">
-      {/* Header Section */}
       <DashboardHeader
-        heading="Welcome to AionTime"
-        text="Your AI-powered project management assistant"
+        heading="Dashboard"
+        text="Your project overview and statistics."
       />
-
-      {/* Stats Overview */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <Card className="overflow-hidden">
-          <CardHeader className="pb-2">
-            <CardDescription>Active Projects</CardDescription>
-            <CardTitle className="text-2xl">{data.activeProjects}</CardTitle>
-          </CardHeader>
-          <CardContent className="p-0">
-            <div className="h-1 bg-primary/10">
-              <div className="h-full w-2/3 bg-primary"></div>
-            </div>
-          </CardContent>
-        </Card>
-        
-        <Card className="overflow-hidden">
-          <CardHeader className="pb-2">
-            <CardDescription>Total Work Items</CardDescription>
-            <CardTitle className="text-2xl">{data.totalWorkItems}</CardTitle>
-          </CardHeader>
-          <CardContent className="p-0">
-            <div className="h-1 bg-indigo-100 dark:bg-indigo-900/30">
-              <div className="h-full w-3/4 bg-indigo-600 dark:bg-indigo-400"></div>
-            </div>
-          </CardContent>
-        </Card>
-        
-        <Card className="overflow-hidden">
-          <CardHeader className="pb-2">
-            <CardDescription>Completion Rate</CardDescription>
-            <CardTitle className="text-2xl">{data.completion}%</CardTitle>
-          </CardHeader>
-          <CardContent className="p-0">
-            <div className="h-1 bg-green-100 dark:bg-green-900/30">
-              <div 
-                className="h-full bg-green-600 dark:bg-green-400"
-                style={{ width: `${data.completion}%` }}
-              ></div>
-            </div>
-          </CardContent>
-        </Card>
-        
-        <Card className="overflow-hidden">
-          <CardHeader className="pb-2">
-            <CardDescription>Team Velocity</CardDescription>
-            <CardTitle className="text-2xl">{data.velocity} pts/wk</CardTitle>
-          </CardHeader>
-          <CardContent className="p-0">
-            <div className="h-1 bg-blue-100 dark:bg-blue-900/30">
-              <div className="h-full w-4/5 bg-blue-600 dark:bg-blue-400"></div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Charts and Activity Section */}
-      <div className="grid gap-4 md:grid-cols-2">
-        <Card>
-          <CardHeader className="pb-3">
-            <div className="flex items-center justify-between">
-              <CardTitle className="text-base font-medium">Work Trend</CardTitle>
+      <div className="container grid gap-6">
+        {/* Stats Overview */}
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Active Projects</CardTitle>
+              <KanbanSquare className="size-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{dashboardData.activeProjects}</div>
+              <p className="text-xs text-muted-foreground">
+                +2 from last month
+              </p>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Total Work Items</CardTitle>
               <BarChart3 className="size-4 text-muted-foreground" />
-            </div>
-          </CardHeader>
-          <CardContent>
-            <SimpleAreaChart />
-          </CardContent>
-        </Card>
-        
-        <Card>
-          <CardHeader className="pb-3">
-            <div className="flex items-center justify-between">
-              <CardTitle className="text-base font-medium">Work Item Distribution</CardTitle>
-              <Icons.pieChart className="size-4 text-muted-foreground" />
-            </div>
-          </CardHeader>
-          <CardContent>
-            <SimplePieChart />
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Work Items and Boards Section */}
-      <Tabs defaultValue="work-items" className="space-y-4">
-        <div className="flex items-center justify-between">
-          <TabsList>
-            <TabsTrigger value="work-items" className="text-xs sm:text-sm">Recent Work Items</TabsTrigger>
-            <TabsTrigger value="boards" className="text-xs sm:text-sm">Project Boards</TabsTrigger>
-          </TabsList>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{dashboardData.totalWorkItems}</div>
+              <p className="text-xs text-muted-foreground">
+                +12% from last month
+              </p>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Team Members</CardTitle>
+              <Users className="size-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{dashboardData.teamMembers}</div>
+              <p className="text-xs text-muted-foreground">
+                +1 new member
+              </p>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Velocity</CardTitle>
+              <Clock className="size-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{dashboardData.velocity}</div>
+              <p className="text-xs text-muted-foreground">
+                points per sprint
+              </p>
+            </CardContent>
+          </Card>
         </div>
 
-        <TabsContent value="work-items" className="space-y-4">
-          <div className="rounded-lg border bg-card">
-            <div className="flex items-center justify-between border-b p-4">
-              <div className="text-sm font-medium">Active Work Items</div>
-              <Button variant="outline" size="sm" className="h-8 text-xs">
-                View All
-              </Button>
-            </div>
-            <div className="divide-y">
-              {data.recentWorkItems.map((item, index) => (
-                <div key={index} className="flex items-center justify-between px-4 py-3">
-                  <div className="flex items-center gap-3">
-                    <div className="font-mono text-xs text-muted-foreground">{item.id}</div>
-                    <div className="text-sm font-medium">{item.title}</div>
-                    <StatusBadge status={item.status} />
-                  </div>
-                  <div className="flex items-center gap-4">
-                    <div className="text-xs text-muted-foreground">{item.assignee}</div>
-                    <PriorityIndicator priority={item.priority} />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </TabsContent>
-
-        <TabsContent value="boards" className="space-y-4">
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {data.recentBoards.map((board, index) => (
-              <Card key={index} className="group overflow-hidden transition-all hover:shadow-md">
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-base">{board.name}</CardTitle>
-                  <CardDescription className="text-xs">
-                    Updated {board.updated}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="pb-3">
-                  <div className="text-sm">{board.items} items</div>
-                </CardContent>
-                <CardFooter className="pt-0">
-                  <Button 
-                    variant="ghost" 
-                    size="sm" 
-                    className="h-8 w-full justify-start pl-0 text-xs group-hover:text-primary"
-                  >
-                    <span>View Board</span>
-                    <ArrowRight className="ml-1 size-3.5 opacity-0 transition-all duration-300 group-hover:ml-2 group-hover:opacity-100" />
-                  </Button>
-                </CardFooter>
-              </Card>
-            ))}
-          </div>
-        </TabsContent>
-      </Tabs>
-
-      {/* Feature Cards */}
-      <div className="grid gap-4 md:grid-cols-2">
-        {/* AI Agent Card */}
-        <Card className="group relative overflow-hidden transition-all hover:shadow-lg">
-          <div className="absolute inset-0 -z-10 bg-gradient-to-br from-primary/5 via-secondary/5 to-primary/5 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-          <CardHeader className="space-y-4 pb-6">
-            <div className="flex items-center justify-between">
-              <CardTitle className="text-xl font-bold">AI Agent</CardTitle>
-              <div className="flex size-12 items-center justify-center">
-                <BrainCircuit className="size-10 text-primary/80" />
-              </div>
-            </div>
-            <CardDescription className="text-base">
-              Let AI help you manage and automate your workflow
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-6 pt-0">
-            <p className="text-muted-foreground">
-              Intelligent automation for task management, sprint planning, and work allocation.
-            </p>
-            <Link href="#" className="block">
-              <Button className="group relative w-full overflow-hidden py-5 text-base transition-all hover:shadow-md">
-                <span className="relative z-10 flex items-center justify-center gap-2">
-                  Try AI Agent
-                  <BrainCircuit className="size-4 transition-transform duration-300 group-hover:rotate-12" />
-                </span>
-                <div className="absolute inset-0 -z-0 bg-gradient-to-r from-primary/10 via-transparent to-primary/10 opacity-0 transition-opacity group-hover:opacity-100" />
-              </Button>
-            </Link>
-          </CardContent>
-        </Card>
-
-        {/* Boards Card */}
-        <Card className="group relative overflow-hidden transition-all hover:shadow-lg">
-          <div className="absolute inset-0 -z-10 bg-gradient-to-br from-secondary/5 via-primary/5 to-secondary/5 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-          <CardHeader className="space-y-4 pb-6">
-            <div className="flex items-center justify-between">
-              <CardTitle className="text-xl font-bold">Project Boards</CardTitle>
-              <div className="flex size-12 items-center justify-center">
-                <KanbanSquare className="size-10 text-primary/80" />
-              </div>
-            </div>
-            <CardDescription className="text-base">
-              Visualize your workflow with customizable project boards
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-6 pt-0">
-            <p className="text-muted-foreground">
-              Create, customize and manage boards for effective project tracking and team collaboration.
-            </p>
-            <Link href="#" className="block">
-              <Button className="group relative w-full overflow-hidden py-5 text-base transition-all hover:shadow-md">
-                <span className="relative z-10 flex items-center justify-center gap-2">
-                  View Boards
-                  <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
-                </span>
-                <div className="absolute inset-0 -z-0 bg-gradient-to-r from-primary/10 via-transparent to-primary/10 opacity-0 transition-opacity group-hover:opacity-100" />
-              </Button>
-            </Link>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Quick Action Cards */}
-      <div className="grid gap-4 md:grid-cols-3">
-        {/* Team Members */}
-        <Card className="group overflow-hidden transition-all hover:bg-muted/50">
-          <CardHeader className="pb-2">
-            <div className="flex items-center gap-2">
-              <Users className="size-4 text-primary" />
-              <CardTitle className="text-sm font-medium">Team Members</CardTitle>
-            </div>
-          </CardHeader>
-          <CardContent className="pb-3">
-            <div className="flex -space-x-3">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <div 
-                  key={i} 
-                  className={`flex size-8 items-center justify-center rounded-full ${
-                    ['bg-blue-500', 'bg-emerald-500', 'bg-amber-500', 'bg-rose-500', 'bg-violet-500'][i]
-                  } text-white text-xs font-medium`}
-                >
-                  {['AK', 'JD', 'ML', 'SP', 'RB'][i]}
-                </div>
-              ))}
-              <div className="flex size-8 items-center justify-center rounded-full bg-primary/10 text-xs font-medium">
-                +{data.teamMembers - 5}
-              </div>
-            </div>
-          </CardContent>
-          <CardFooter className="pt-0">
-            <Button variant="ghost" size="sm" className="h-8 px-3 text-xs">
-              View Team
-            </Button>
-          </CardFooter>
-        </Card>
+        {/* Main Content */}
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
+          <Card className="col-span-4">
+            <CardHeader>
+              <CardTitle>Work Trends</CardTitle>
+              <CardDescription>
+                Overview of work items completed over time
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <SimpleAreaChart />
+            </CardContent>
+          </Card>
+          <Card className="col-span-3">
+            <CardHeader>
+              <CardTitle>Work Item Distribution</CardTitle>
+              <CardDescription>
+                Breakdown of work items by type
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <SimplePieChart />
+            </CardContent>
+          </Card>
+        </div>
 
         {/* Recent Activity */}
-        <Card className="group overflow-hidden transition-all hover:bg-muted/50">
-          <CardHeader className="pb-2">
-            <div className="flex items-center gap-2">
-              <Clock className="size-4 text-primary" />
-              <CardTitle className="text-sm font-medium">Recent Activity</CardTitle>
-            </div>
-          </CardHeader>
-          <CardContent className="pb-3">
-            <div className="space-y-1.5">
-              <p className="text-xs text-muted-foreground">
-                <span className="font-medium text-foreground">Alex K.</span> completed task AZ-145
-              </p>
-              <p className="text-xs text-muted-foreground">
-                <span className="font-medium text-foreground">Maria L.</span> updated the sprint plan
-              </p>
-            </div>
-          </CardContent>
-          <CardFooter className="pt-0">
-            <Button variant="ghost" size="sm" className="h-8 px-3 text-xs">
-              View Activity
-            </Button>
-          </CardFooter>
-        </Card>
-
-        {/* Pending Reviews */}
-        <Card className="group overflow-hidden transition-all hover:bg-muted/50">
-          <CardHeader className="pb-2">
-            <div className="flex items-center gap-2">
-              <Icons.filePenLine className="size-4 text-primary" />
-              <CardTitle className="text-sm font-medium">Pending Reviews</CardTitle>
-            </div>
-          </CardHeader>
-          <CardContent className="pb-3">
-            <div className="flex justify-between">
-              <span className="text-2xl font-medium">{data.pendingReviews}</span>
-              <span className="text-xs text-muted-foreground">items need review</span>
-            </div>
-          </CardContent>
-          <CardFooter className="pt-0">
-            <Button variant="ghost" size="sm" className="h-8 px-3 text-xs">
-              Start Reviewing
-            </Button>
-          </CardFooter>
-        </Card>
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
+          <Card className="col-span-4">
+            <CardHeader>
+              <CardTitle>Recent Work Items</CardTitle>
+              <CardDescription>
+                Latest updates and progress
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {dashboardData.recentWorkItems.map((item) => (
+                  <div key={item.id} className="flex items-center justify-between">
+                    <div className="space-y-1">
+                      <p className="text-sm font-medium leading-none">
+                        {item.id} - {item.title}
+                      </p>
+                      <p className="text-sm text-muted-foreground">
+                        Assigned to {item.assignee}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-4">
+                      <StatusBadge status={item.status} />
+                      <PriorityIndicator priority={item.priority} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+            <CardFooter>
+              <Button variant="outline" className="w-full">
+                View All Work Items
+                <ArrowRight className="ml-2 size-4" />
+              </Button>
+            </CardFooter>
+          </Card>
+          <Card className="col-span-3">
+            <CardHeader>
+              <CardTitle>Recent Boards</CardTitle>
+              <CardDescription>
+                Recently updated project boards
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {dashboardData.recentBoards.map((board) => (
+                  <div key={board.name} className="flex items-center justify-between">
+                    <div className="space-y-1">
+                      <p className="text-sm font-medium leading-none">
+                        {board.name}
+                      </p>
+                      <p className="text-sm text-muted-foreground">
+                        {board.items} items • Updated {board.updated}
+                      </p>
+                    </div>
+                    <Button variant="ghost" size="icon">
+                      <ArrowRight className="size-4" />
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+            <CardFooter>
+              <Button variant="outline" className="w-full">
+                View All Boards
+                <ArrowRight className="ml-2 size-4" />
+              </Button>
+            </CardFooter>
+          </Card>
+        </div>
       </div>
     </div>
   );

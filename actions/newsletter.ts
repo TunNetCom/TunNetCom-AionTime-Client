@@ -1,7 +1,7 @@
 "use server";
 
 import { z } from "zod";
-import { prisma } from "@/lib/db";
+import { db } from "@/lib/db";
 
 // Validation schema for email
 const emailSchema = z.string().email("Please enter a valid email address");
@@ -12,7 +12,7 @@ export async function subscribeToNewsletter(email: string) {
     const validatedEmail = emailSchema.parse(email);
 
     // Check if the email already exists
-    const existingSubscriber = await prisma.newsletterSubscriber.findUnique({
+    const existingSubscriber = await db.newsletterSubscriber.findUnique({
       where: { email: validatedEmail },
     });
 
@@ -21,7 +21,7 @@ export async function subscribeToNewsletter(email: string) {
     }
 
     // Create a new subscriber
-    await prisma.newsletterSubscriber.create({
+    await db.newsletterSubscriber.create({
       data: {
         email: validatedEmail,
       },

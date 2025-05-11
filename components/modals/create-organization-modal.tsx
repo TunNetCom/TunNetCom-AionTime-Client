@@ -9,13 +9,10 @@ import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/
 import { OrganizationDetailsForm } from "@/components/forms/organization/details-form";
 import { IntegrationSelectionList } from "@/components/forms/organization/integration-selection";
 import { IntegrationConfigForm } from "@/components/forms/organization/integration-config";
-import { StepIndicator } from "@/components/forms/organization/step-indicator";
 import { createOrganizationWithIntegration } from "@/actions/create-org.server";
 import { getHexColor } from "@/components/forms/organization/color-utils";
 
 import type { OrganizationFormValues, IntegrationType, IntegrationFormValues } from "@/components/forms/organization/types";
-
-type Step = "details" | "integration" | "config";
 
 export default function CreateOrganizationModal({
   setOpenPopover,
@@ -30,7 +27,6 @@ export default function CreateOrganizationModal({
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(autoOpen);
   const [isForceOpen, setIsForceOpen] = useState(autoOpen);
-  const [currentStep, setCurrentStep] = useState<Step>("details");
   const [selectedIntegration, setSelectedIntegration] = useState<IntegrationType>(null);
   const [orgDetails, setOrgDetails] = useState<OrganizationFormValues | null>(null);
   
@@ -46,10 +42,7 @@ export default function CreateOrganizationModal({
 
   const handleDetailsSubmit = async (values: OrganizationFormValues) => {
     setOrgDetails(values);
-    setCurrentStep("integration");
   };
-
-  
 
   const handleIntegrationSubmit = async (values: IntegrationFormValues) => {
     if (!orgDetails || !selectedIntegration) return;
@@ -87,37 +80,6 @@ export default function CreateOrganizationModal({
       );
     }
   };
-
-  const getStepTitle = () => {
-    switch (currentStep) {
-      case "details":
-        return "Organization Details";
-      case "integration":
-        return "Choose Integration";
-      case "config":
-        return selectedIntegration === "azure"
-          ? "Configure Azure DevOps"
-          : "Configure Integration";
-      default:
-        return "Create Organization";
-    }
-  };
-
-  const getStepNumber = () => {
-    switch (currentStep) {
-      case "details":
-        return 1;
-      case "integration":
-        return 2;
-      case "config":
-        return 3;
-      default:
-        return 1;
-    }
-  };
-
-  const currentStepNum = getStepNumber();
-  const totalSteps = 3;
 
   return (
     <>
@@ -157,93 +119,57 @@ export default function CreateOrganizationModal({
             <div className="flex items-center gap-2">
               <Building2 className="size-5" />
               <DialogTitle className="text-lg font-semibold">
-                {currentStep === "details" ? "Create New Organization" : "Select Integrations"}
+                Create New Organization
               </DialogTitle>
             </div>
           </div>
 
-          {/* Step title with proper spacing */}
-          <div className="px-6 pt-4">
-            <h3 className="text-base font-medium">{getStepTitle()}</h3>
-          </div>
-
-          {/* Step indicator */}
-          <StepIndicator currentStep={currentStepNum} totalSteps={totalSteps} />
-
           {/* Content area */}
-          <div className="flex-1 overflow-y-auto px-6">
-            {currentStep === "details" && (
+          <div className="flex-1 overflow-y-auto px-6 py-4">
+            <div className="space-y-6">
               <OrganizationDetailsForm 
                 onSubmit={handleDetailsSubmit}
                 initialData={orgDetails}
                 loading={loading}
               />
-            )}
 
-            {currentStep === "integration" && (
               <IntegrationSelectionList
                 onSelect={(integrationType) => {
                   setSelectedIntegration(integrationType);
-                  setCurrentStep("config");
                 }}
               />
-            )}
 
-            {currentStep === "config" && selectedIntegration && (
-              <IntegrationConfigForm
-                integrationType={selectedIntegration}
-                onSubmit={handleIntegrationSubmit}
-                loading={loading}
-                formRef={configFormRef}
-              />
-            )}
+              {selectedIntegration && (
+                <IntegrationConfigForm
+                  integrationType={selectedIntegration}
+                  onSubmit={handleIntegrationSubmit}
+                  loading={loading}
+                  formRef={configFormRef}
+                />
+              )}
+            </div>
           </div>
 
           {/* Footer */}
-          <div className="flex items-center justify-between border-t p-4 px-6">
-            {/* Back button for steps 2 and 3 */}
-            {currentStep !== "details" && (
-              <Button
-                type="button"
-                variant="outline"
-                className="min-w-24 flex items-center gap-1"
-                onClick={() => {
-                  if (currentStep === "config") {
-                    setCurrentStep("integration");
-                  } else if (currentStep === "integration") {
-                    setCurrentStep("details");
-                  }
-                }}
-              >
-                <span>Back</span>
-              </Button>
-            )}
-
-            {/* Action buttons */}
-            <div className="ml-auto flex gap-2">
-             
-
-              {currentStep === "config" && (
-                <Button 
-                  type="button"
-                  className="min-w-28 flex items-center gap-1.5"
-                  onClick={submitConfigForm}
-                  disabled={loading}
-                >
-                  {loading ? (
-                    <>
-                      <Loader2 className="size-4 animate-spin" />
-                      <span>Creating...</span>
-                    </>
-                  ) : (
-                    <>
-                      <span>Create Organization</span>
-                      <CheckIcon className="size-4" />
-                    </>
-                  )}
-                </Button>
+          <div className="flex items-center justify-end border-t p-4 px-6">
+            <Button 
+              type="button"
+              className="min-w-28 flex items-center gap-1.5"
+              onClick={submitConfigForm}
+              disabled={loading}
+            >
+              {loading ? (
+                <>
+                  <Loader2 className="size-4 animate-spin" />
+                  <span>Creating...</span>
+                </>
+              ) : (
+                <>
+                  <span>Create Organization</span>
+                  <CheckIcon className="size-4" />
+                </>
               )}
-            </div>
+            </Button>
           </div>
         </DialogContent>
       </Dialog>

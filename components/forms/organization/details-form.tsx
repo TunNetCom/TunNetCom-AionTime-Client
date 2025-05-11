@@ -1,4 +1,4 @@
-"use client";;
+"use client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowRight, Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
@@ -23,12 +23,14 @@ interface OrganizationDetailsFormProps {
   onSubmit: (values: OrganizationFormValues) => void;
   initialData?: OrganizationFormValues | null;
   loading?: boolean;
+  isSignUp?: boolean;
 }
 
 export function OrganizationDetailsForm({
   onSubmit,
   initialData,
   loading = false,
+  isSignUp = false,
 }: OrganizationDetailsFormProps) {
   const form = useForm<OrganizationFormValues>({
     resolver: zodResolver(organizationFormSchema),
@@ -36,6 +38,8 @@ export function OrganizationDetailsForm({
       name: "",
       email: "",
       color: "blue",
+      password: "",
+      confirmPassword: "",
     },
   });
 
@@ -58,7 +62,11 @@ export function OrganizationDetailsForm({
                 Organization Name
               </FormLabel>
               <FormControl>
-                <Input placeholder="Acme Inc." {...field} className="h-10" />
+                <Input 
+                  placeholder="Acme Inc." 
+                  {...field} 
+                  className="h-10" 
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -71,24 +79,75 @@ export function OrganizationDetailsForm({
           render={({ field }) => (
             <FormItem>
               <FormLabel className="text-base font-medium">
-                Contact Email
+                {isSignUp ? "Email Address" : "Contact Email"}
               </FormLabel>
               <FormControl>
                 <Input
                   type="email"
-                  placeholder="admin@yourcompany.com"
+                  placeholder="you@example.com"
                   {...field}
                   className="h-10"
                 />
               </FormControl>
               <FormDescription>
-                This is the email address that will be used for display
-                purposes.
+                {isSignUp 
+                  ? "This will be your login email"
+                  : "This is the email address that will be used for display purposes."
+                }
               </FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
+
+        {isSignUp && (
+          <>
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-base font-medium">
+                    Password
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      type="password"
+                      placeholder="Create a password"
+                      {...field}
+                      className="h-10"
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    Must be at least 8 characters long
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="confirmPassword"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-base font-medium">
+                    Confirm Password
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      type="password"
+                      placeholder="Confirm your password"
+                      {...field}
+                      className="h-10"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </>
+        )}
 
         <FormField
           control={form.control}

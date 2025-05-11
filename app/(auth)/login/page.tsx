@@ -4,10 +4,11 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { Icons } from "@/components/shared/icons";
+import { LoginForm } from "@/components/auth/login-form";
 
 export const metadata: Metadata = {
   title: "Login",
-  description: "Login to your account or create an account",
+  description: "Login to your account",
 };
 
 export default function LoginPage() {
@@ -28,13 +29,12 @@ export default function LoginPage() {
       <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
         <div className="flex flex-col space-y-2 text-center">
           <Icons.logo className="mx-auto size-10" />
-          <h1 className="text-2xl font-semibold tracking-tight">Welcome</h1>
+          <h1 className="text-2xl font-semibold tracking-tight">Welcome back</h1>
           <p className="text-sm text-muted-foreground">
-            Enter your email to sign in or create an account automatically
+            Enter your credentials to sign in to your account
           </p>
         </div>
-
-
+        <LoginForm />
       </div>
     </div>
   );

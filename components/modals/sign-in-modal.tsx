@@ -7,16 +7,33 @@ import {
 } from "react";
 import { DialogDescription, DialogTitle } from "@radix-ui/react-dialog";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
-import { MailIcon } from "lucide-react";
 import { signIn } from "next-auth/react";
 import { toast } from "sonner";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { useRouter } from "next/navigation";
 
 import { siteConfig } from "@/config/site";
 import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Modal } from "@/components/ui/modal";
 import { Icons } from "@/components/shared/icons";
+
+const loginFormSchema = z.object({
+  username: z.string().min(1, "Username is required"),
+  password: z.string().min(1, "Password is required"),
+});
+
+type LoginFormValues = z.infer<typeof loginFormSchema>;
 
 function SignInModal({
   showSignInModal,
@@ -25,34 +42,44 @@ function SignInModal({
   showSignInModal: boolean;
   setShowSignInModal: Dispatch<SetStateAction<boolean>>;
 }) {
-  const [signInClicked, setSignInClicked] = useState(false);
-  const [signInWithGitHubClicked, setSignInWithGitHubClicked] = useState(false);
-  const [email, setEmail] = useState("");
-  const [isEmailLoading, setIsEmailLoading] = useState(false);
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleEmailSignIn = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsEmailLoading(true);
+  const form = useForm<LoginFormValues>({
+    resolver: zodResolver(loginFormSchema),
+    defaultValues: {
+      username: "",
+      password: "",
+    },
+  });
+
+  async function onSubmit(data: LoginFormValues) {
+    setIsLoading(true);
 
     try {
-      const result = await signIn("nodemailer", {
-        email,
-        redirect: false,
+      console.log("Attempting sign in with:", { username: data.username });
       
+      const result = await signIn("custom-api", {
+        username: data.username,
+        password: data.password,
+        redirect: true,
+        callbackUrl: "/dashboard"
       });
 
+      // If we get here, it means there was an error
       if (result?.error) {
-        toast.error("Failed to send magic link");
-      } else {
-        toast.success("Magic link sent to your email!");
-        setTimeout(() => setShowSignInModal(false), 400);
+        console.error("Sign in error:", result.error);
+        toast.error(result.error === "CredentialsSignin" 
+          ? "Invalid username or password" 
+          : "Authentication failed. Please try again.");
       }
     } catch (error) {
+      console.error("Sign in error:", error);
       toast.error("Something went wrong. Please try again.");
     } finally {
-      setIsEmailLoading(false);
+      setIsLoading(false);
     }
-  };
+  }
 
   return (
     <Modal showModal={showSignInModal} setShowModal={setShowSignInModal}>
@@ -69,80 +96,56 @@ function SignInModal({
           </a>
           <h3 className="font-urban text-2xl font-bold">Sign In</h3>
           <p className="text-sm text-gray-500">
-            Ready to ace your next interview?
+            Enter your credentials to continue
           </p>
         </div>
 
         <div className="flex flex-col space-y-4 px-4 py-8 md:px-16">
-          <form onSubmit={handleEmailSignIn} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="hello@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+              <FormField
+                control={form.control}
+                name="username"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Username</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="Enter your username"
+                        {...field}
+                        disabled={isLoading}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
-            </div>
-            <Button type="submit" className="w-full" disabled={isEmailLoading}>
-              {isEmailLoading ? (
-                <Icons.spinner className="mr-2 size-4 animate-spin" />
-              ) : (
-                <MailIcon className="mr-2 size-4" />
-              )}{" "}
-              Sign in with Email
-            </Button>
-          </form>
-
-          <div className="relative">
-            <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t" />
-            </div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-background px-2 text-muted-foreground">
-                Or continue with
-              </span>
-            </div>
-          </div>
-
-          <Button
-            variant="default"
-            disabled={signInClicked}
-            onClick={() => {
-              setSignInClicked(true);
-              signIn("google", { callbackUrl: window.location.origin });
-            }}
-          >
-            {signInClicked ? (
-              <Icons.spinner className="mr-2 size-4 animate-spin" />
-            ) : (
-              <Icons.google className="mr-2 size-4" />
-            )}{" "}
-            Sign In with Google
-          </Button>
-
-          {/* GitHub sign-in button */}
-          {/* <Button
-            variant="default"
-            disabled={signInWithGitHubClicked}
-            onClick={() => {
-              setSignInWithGitHubClicked(true);
-              signIn("github", { redirect: false }).then(() =>
-                setTimeout(() => {
-                  setShowSignInModal(false);
-                }, 400),
-              );
-            }}
-          >
-            {signInWithGitHubClicked ? (
-              <Icons.spinner className="mr-2 size-4 animate-spin" />
-            ) : (
-              <Icons.gitHub className="mr-2 size-4" />
-            )}{" "}
-            Sign In with GitHub
-          </Button> */}
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Password</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="password"
+                        placeholder="Enter your password"
+                        {...field}
+                        disabled={isLoading}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <Button className="w-full" type="submit" disabled={isLoading}>
+                {isLoading && (
+                  <Icons.spinner className="mr-2 size-4 animate-spin" />
+                )}
+                Sign In
+              </Button>
+            </form>
+          </Form>
         </div>
       </div>
     </Modal>
