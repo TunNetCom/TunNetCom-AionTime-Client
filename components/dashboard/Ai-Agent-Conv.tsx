@@ -20,7 +20,7 @@ const AiAgentConv: React.FC = () => {
   const renderHistory = () => {
     return chatHistory.map((msg, index) => {
       const contentHTML = escapeHtml(msg.content || "")
-        .replace(/```(.*?)```/gs, `<pre><code>${"$1".trim()}</code></pre>`)
+        .replace(/```(.*?)```/g, `<pre><code>${"$1".trim()}</code></pre>`)
         .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
         .replace(/\n/g, "<br>");
 

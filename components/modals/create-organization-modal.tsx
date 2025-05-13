@@ -12,7 +12,12 @@ import { IntegrationConfigForm } from "@/components/forms/organization/integrati
 import { createOrganizationWithIntegration } from "@/actions/create-org.server";
 import { getHexColor } from "@/components/forms/organization/color-utils";
 
-import type { OrganizationFormValues, IntegrationType, IntegrationFormValues } from "@/components/forms/organization/types";
+import type { OrganizationFormValues, IntegrationType } from "@/components/forms/organization/types";
+
+export type IntegrationFormValues = {
+  accessToken: string;
+  integrationUrl?: string; // Add integrationUrl as an optional property
+};
 
 export default function CreateOrganizationModal({
   setOpenPopover,
@@ -48,12 +53,13 @@ export default function CreateOrganizationModal({
     if (!orgDetails || !selectedIntegration) return;
 
     setLoading(true);
-    try {
+    try {²
       const result = await createOrganizationWithIntegration({
         ...orgDetails,
         color: getHexColor(orgDetails.color),
         ...values,
         integrationType: selectedIntegration,
+        integrationUrl: values.integrationUrl || "TunNetCom", // Ensure integrationUrl is provided
       });
 
       if (result.status === "error") {
@@ -176,4 +182,4 @@ export default function CreateOrganizationModal({
       {children}
     </>
   );
-} 
+}
