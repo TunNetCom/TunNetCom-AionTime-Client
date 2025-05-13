@@ -8,7 +8,7 @@
   },
   "scripts": {
     "dev": "next dev --turbo",
-    "build": "contentlayer2 build && next build",
+    "build": "prisma generate && contentlayer2 build && next build",
     "turbo": "next dev --turbo",
     "start": "next start",
     "lint": "next lint",
