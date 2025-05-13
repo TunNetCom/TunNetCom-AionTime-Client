@@ -4,8 +4,8 @@ import type { SidebarNavItem } from "types/index.d";
 import { sidebarLinks } from "@/config/dashboard";
 import { getOrgRole, getUserOrganization } from "@/lib/organization";
 import { getCurrentUser } from "@/lib/session";
-import { SearchCommand } from "@/components/dashboard/search-command";
 import { QuickActions } from "@/components/dashboard/quick-actions";
+import { SearchCommand } from "@/components/dashboard/search-command";
 import {
   DashboardSidebar,
   MobileSheetSidebar,
