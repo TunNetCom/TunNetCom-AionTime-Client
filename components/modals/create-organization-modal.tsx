@@ -1,18 +1,26 @@
 "use client";
+
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { createOrganizationWithIntegration } from "@/actions/create-org.server";
 import { Building2, CheckIcon, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { OrganizationDetailsForm } from "@/components/forms/organization/details-form";
-import { IntegrationSelectionList } from "@/components/forms/organization/integration-selection";
-import { IntegrationConfigForm } from "@/components/forms/organization/integration-config";
-import { createOrganizationWithIntegration } from "@/actions/create-org.server";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { getHexColor } from "@/components/forms/organization/color-utils";
-
-import type { OrganizationFormValues, IntegrationType } from "@/components/forms/organization/types";
+import { OrganizationDetailsForm } from "@/components/forms/organization/details-form";
+import { IntegrationConfigForm } from "@/components/forms/organization/integration-config";
+import { IntegrationSelectionList } from "@/components/forms/organization/integration-selection";
+import type {
+  IntegrationType,
+  OrganizationFormValues,
+} from "@/components/forms/organization/types";
 
 export type IntegrationFormValues = {
   accessToken: string;
@@ -32,9 +40,12 @@ export default function CreateOrganizationModal({
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(autoOpen);
   const [isForceOpen, setIsForceOpen] = useState(autoOpen);
-  const [selectedIntegration, setSelectedIntegration] = useState<IntegrationType>(null);
-  const [orgDetails, setOrgDetails] = useState<OrganizationFormValues | null>(null);
-  
+  const [selectedIntegration, setSelectedIntegration] =
+    useState<IntegrationType>(null);
+  const [orgDetails, setOrgDetails] = useState<OrganizationFormValues | null>(
+    null,
+  );
+
   // Form ref for the integration config form
   const configFormRef = useRef<HTMLFormElement>(null);
 
@@ -53,7 +64,7 @@ export default function CreateOrganizationModal({
     if (!orgDetails || !selectedIntegration) return;
 
     setLoading(true);
-    try {²
+    try {
       const result = await createOrganizationWithIntegration({
         ...orgDetails,
         color: getHexColor(orgDetails.color),
@@ -82,7 +93,7 @@ export default function CreateOrganizationModal({
   const submitConfigForm = () => {
     if (configFormRef.current) {
       configFormRef.current.dispatchEvent(
-        new Event('submit', { cancelable: true, bubbles: true })
+        new Event("submit", { cancelable: true, bubbles: true }),
       );
     }
   };
@@ -133,7 +144,7 @@ export default function CreateOrganizationModal({
           {/* Content area */}
           <div className="flex-1 overflow-y-auto px-6 py-4">
             <div className="space-y-6">
-              <OrganizationDetailsForm 
+              <OrganizationDetailsForm
                 onSubmit={handleDetailsSubmit}
                 initialData={orgDetails}
                 loading={loading}
@@ -158,9 +169,9 @@ export default function CreateOrganizationModal({
 
           {/* Footer */}
           <div className="flex items-center justify-end border-t p-4 px-6">
-            <Button 
+            <Button
               type="button"
-              className="min-w-28 flex items-center gap-1.5"
+              className="flex min-w-28 items-center gap-1.5"
               onClick={submitConfigForm}
               disabled={loading}
             >
