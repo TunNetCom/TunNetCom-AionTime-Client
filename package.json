@@ -1,10 +1,10 @@
 {
-  "name": "cruxhire-ai",
+  "name": "aiontime-ai",
   "version": "0.5",
   "private": true,
   "author": {
-    "name": "CruxHire AI",
-    "url": "https://cruxhire.com"
+    "name": "Aiontime AI",
+    "url": "https://aiontime.com"
   },
   "scripts": {
     "dev": "next dev --turbo",

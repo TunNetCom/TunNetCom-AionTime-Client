@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Globe, Info as InfoIcon, ShieldCheck, Loader2, ArrowRight } from "lucide-react";
+import { Globe, ShieldCheck } from "lucide-react";
 import { useForm } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
@@ -15,7 +15,6 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Icons } from "@/components/shared/icons";
 
 import {
     integrationFormSchema,
@@ -40,6 +39,7 @@ export function IntegrationConfigForm({
     resolver: zodResolver(integrationFormSchema),
     defaultValues: {
       accessToken: "",
+      integrationUrl: "",
     },
   });
 
@@ -55,6 +55,31 @@ export function IntegrationConfigForm({
           onSubmit={form.handleSubmit(handleSubmit)}
           className="flex flex-col space-y-6 py-6"
         >
+          <FormField
+            control={form.control}
+            name="integrationUrl"
+            render={({ field }) => (
+              <FormItem className="space-y-3">
+                <FormLabel className="flex items-center gap-1.5 text-base font-medium">
+                  <Globe className="size-4 text-blue-500" />
+                  Azure DevOps Organization URL
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    type="text"
+                    placeholder="https://dev.azure.com/your-organization"
+                    {...field}
+                    className="h-10"
+                  />
+                </FormControl>
+                <FormDescription className="text-xs">
+                  The URL of your Azure DevOps organization
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          
           <FormField
             control={form.control}
             name="accessToken"
@@ -94,6 +119,7 @@ export function IntegrationConfigForm({
         onClick={() =>
           onSubmit({
             accessToken: "placeholder-token",
+            integrationUrl: "https://placeholder-url.com",
           })
         }
       >

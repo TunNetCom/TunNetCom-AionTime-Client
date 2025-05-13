@@ -1,15 +1,12 @@
 "use client";
 
 import {
-  createContext,
-  useContext,
-  useState,
-  useCallback,
-  useMemo,
+    createContext,
+    useContext, useMemo
 } from "react";
 
-import { SignInModal, useSignInModal } from "./sign-in-modal";
-import { SignUpModal, useSignUpModal } from "./sign-up-modal";
+import { useSignInModal } from "./sign-in-modal";
+import { useSignUpModal } from "./sign-up-modal";
 
 interface ModalContextType {
   setShowSignInModal: (show: boolean) => void;

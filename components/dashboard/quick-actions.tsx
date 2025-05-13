@@ -15,7 +15,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { API_CONFIG } from "./config/api";
 
 export function QuickActions() {
   const [isChatOpen, setIsChatOpen] = useState(false);

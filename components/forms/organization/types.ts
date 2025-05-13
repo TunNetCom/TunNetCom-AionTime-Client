@@ -25,6 +25,7 @@ export type OrganizationFormValues = z.infer<typeof organizationFormSchema>;
 
 export const integrationFormSchema = z.object({
   accessToken: z.string().min(1, "Personal Access Token is required"),
+  integrationUrl: z.string().min(1, "Organization URL is required"),
 });
 
 export type IntegrationFormValues = z.infer<typeof integrationFormSchema>;

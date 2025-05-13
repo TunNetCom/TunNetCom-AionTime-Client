@@ -1,9 +1,9 @@
 import {
-  Dispatch,
-  SetStateAction,
-  useCallback,
-  useMemo,
-  useState,
+    Dispatch,
+    SetStateAction,
+    useCallback,
+    useMemo,
+    useState,
 } from "react";
 import { DialogDescription, DialogTitle } from "@radix-ui/react-dialog";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
@@ -17,12 +17,12 @@ import { useRouter } from "next/navigation";
 import { siteConfig } from "@/config/site";
 import { Button } from "@/components/ui/button";
 import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Modal } from "@/components/ui/modal";
@@ -62,16 +62,21 @@ function SignInModal({
       const result = await signIn("custom-api", {
         username: data.username,
         password: data.password,
-        redirect: true,
+        redirect: false,
         callbackUrl: "/dashboard"
       });
 
-      // If we get here, it means there was an error
-      if (result?.error) {
-        console.error("Sign in error:", result.error);
-        toast.error(result.error === "CredentialsSignin" 
-          ? "Invalid username or password" 
-          : "Authentication failed. Please try again.");
+      // Type-safe handling of result
+      if (result && typeof result === 'object') {
+        if ('error' in result && result.error) {
+          console.error("Sign in error:", result.error);
+          toast.error(result.error === "CredentialsSignin" 
+            ? "Invalid username or password" 
+            : "Authentication failed. Please try again.");
+        } else if ('url' in result && result.url) {
+          // Successful sign-in
+          router.push(result.url);
+        }
       }
     } catch (error) {
       console.error("Sign in error:", error);
