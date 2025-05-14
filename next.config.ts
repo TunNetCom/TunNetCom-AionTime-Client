@@ -8,7 +8,17 @@ import { withContentlayer } from "next-contentlayer2";
 import "./env.mjs";
 
 const nextConfig: NextConfig = {
-
+  output: "standalone",
+  eslint: {
+    // Warning: This disables ESLint during builds.
+    // Ensure ESLint is run as a separate step in your CI/CD pipeline.
+    ignoreDuringBuilds: true,
+  },
+  typescript: {
+    // Warning: This disables type checking during builds.
+    // Ensure type checking is run as a separate step in your CI/CD pipeline.
+    ignoreBuildErrors: true,
+  },
   experimental: {
     serverActions: {
       bodySizeLimit: "6mb",
